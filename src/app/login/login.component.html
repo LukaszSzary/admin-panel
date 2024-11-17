@@ -1,0 +1,21 @@
+<div id="body">
+  <div class="form">
+      <div><p>Login to administration panel</p></div>
+
+      <form action="" [formGroup]="logInForm" (ngSubmit)="submitLogIn()">
+        <input type="text" placeholder="Email" formControlName="email" />
+
+        <input
+          type="password"
+          placeholder="Password"
+          formControlName="password"
+          maxlength="16"
+        />
+
+        <p id="errorBaner" ass="text-red-600 pt-3" #errorBaner>Wrong email or password</p>
+
+        <button type="submit" [disabled]="!logInForm.valid">Sign in</button>
+      </form>
+      
+  </div>    
+</div>
