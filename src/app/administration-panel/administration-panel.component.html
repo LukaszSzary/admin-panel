@@ -1,1 +1,8 @@
-<p>administration-panel works!</p>
+<div id="admin-panel-wrapper">
+    <nav>
+        <a routerLink="./" routerLinkActive="active"><button>main</button></a> 
+        <a routerLink="posts" routerLinkActive="active"><button>Post</button></a> 
+        <a routerLink="comments" routerLinkActive="active"><button>Comments</button></a> 
+    </nav>
+    <router-outlet />
+</div>
