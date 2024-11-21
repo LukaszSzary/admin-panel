@@ -8,12 +8,23 @@ import * as globals from '../../global'
   providedIn: 'root'
 })
 export class CommentService {
-  private apiURL: string = "";
-
+  private apiURL: string = globals + "";
+  
   private httpClient = inject(HttpClient);
-  constructor() { }
 
-  getComments(pageNo: number): Observable<Comment[]>{
+  public discardReport(commentId: string): Observable<any>{
+    return this.httpClient.post<any>(this.apiURL, commentId);
+  }
+
+  public deleteComment(commentId: string): Observable<any>{
+    return this.httpClient.post<any>(this.apiURL, commentId);
+  }
+
+  public banUser(commentId: string): Observable<any>{
+    return this.httpClient.post<any>(this.apiURL, commentId);
+  }
+
+  public getComments(pageNo: number): Observable<Comment[]>{
     return of([
     {
     id: 'FSDFDG',

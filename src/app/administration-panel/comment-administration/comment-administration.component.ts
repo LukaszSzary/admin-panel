@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Comment } from './comment';
 import { CommentService } from './comment.service';
 import { filter, fromEvent, map, Subscription, throttleTime } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-comment-administration',
@@ -15,6 +16,8 @@ export class CommentAdministrationComponent {
   @ViewChild('commentsScroll') commentsScroll!: ElementRef;
   
   private commentService = inject(CommentService);
+  private snackBar = inject(MatSnackBar);
+
   private scrollSubscription!: Subscription;
 
   comments: Comment[] = [];
@@ -59,22 +62,59 @@ export class CommentAdministrationComponent {
   }
 
   discardReport(commentId: string){
-    this.handleReports(commentId);
-
+    this.handleReport(commentId);
+    this.commentService.discardReport(commentId).subscribe({
+      next: (response) => {
+        if (response.status == 200) {
+          this.openSnackBar('Report discarded');
+        }
+      },
+      error: (error) => {
+        
+      },
+    });
   }
 
   deleteComment(commentId: string){
-    this.handleReports(commentId);
+    this.handleReport(commentId);
+    this.commentService.deleteComment(commentId).subscribe({
+      next: (response) => {
+        if (response.status == 200) {
+          this.openSnackBar('Comment deleted');
+        }
+      },
+      error: (error) => {
+        
+      },
+    });
   }
 
   banUser(commentId: string){
-    this.handleReports(commentId);
+    this.handleReport(commentId);
+    this.commentService.banUser(commentId).subscribe({
+      next: (response) => {
+        if (response.status == 200) {
+          this.openSnackBar('User banned');
+        }
+      },
+      error: (error) => {
+        
+      },
+    });
   }
 
-  handleReports(commentId: string){
+  handleReport(commentId: string){
     this.comments = this.comments.filter(com => com.id !== commentId);
     if(this.comments.length < 10){
       this.loadComments();
     }  
+  }
+
+  openSnackBar(message: string) {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+    });
   }
 }
