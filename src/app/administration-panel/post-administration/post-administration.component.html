@@ -1,3 +1,17 @@
-<div id="wrapper">
-
+<div id="wrapper" #postsScroll>
+    @for (post of posts; track post.id) {
+    <div id="report-wrapper">
+        <div class="post">
+            <label class="post-title">
+                {{post.title}}                
+            </label>
+            <img [src]="imgSrc">     
+        </div>
+        <div id="button-wrapper">
+            <button (click)="discardReport(post.id)">Discard report</button>
+            <button (click)="deletePost(post.id)">Delete post</button>
+            <button (click)="banUser(post.id)">Delete post and block user</button>
+        </div>
+    </div>
+    }
 </div>
