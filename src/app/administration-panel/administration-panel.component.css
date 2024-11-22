@@ -19,7 +19,7 @@ nav{
 
 button {
     width: 7vw; 
-    min-width: 54px;
+    min-width: 100px;
     height: 7vh;
     min-height: 32px;
     color: #000814;

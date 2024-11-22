@@ -28,8 +28,9 @@
 
 button{
     width: 8vw;
+    min-width: 90px;
     height: 4vw;
-    max-height: 4vw;
+    min-height: 45px;
     overflow: hidden;
     color: #fff;
     font-size: large;
@@ -79,6 +80,7 @@ button:hover{
   /* Handle */
 ::-webkit-scrollbar-thumb {
     background: rgb(110, 110, 110);
+    border-radius: 4px;
 }
   
   /* Handle on hover */

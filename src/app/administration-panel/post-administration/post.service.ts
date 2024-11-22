@@ -25,6 +25,47 @@ export class PostService {
   }
 
   public getPosts(pageNo: number): Observable<any>{
-    return of('');
+    return of([
+      {
+        id: 'ds',
+        title: 'title',
+        file: null,
+    },
+    {
+      id: 'gfds',
+      title: 'title',
+      file: null,
+    },
+    {
+      id: '5t',
+      title: 'title',
+      file: null,
+    },
+    {
+      id: 'dsad',
+      title: 'title',
+      file: null,
+    },
+    {
+    id: 'ds;l/',
+    title: 'title',
+    file: null,
+    },      
+    {
+    id: 'dfgs',
+    title: 'title',
+    file: null,
+    },
+    {
+    id: 'ddgs',
+    title: 'title',
+    file: null,
+    },
+    {
+      id: '1ddgs',
+      title: 'title',
+      file: null,
+      },
+    ]);
   }  
 }
