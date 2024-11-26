@@ -6,7 +6,7 @@ import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class LoginService {
-  url = myGlobals.apiLink + '/login';
+  url = myGlobals.apiLink + '/authentication/login';
   private httpClient = inject(HttpClient);
 
   loginUser(authString: string): Observable<any>{
