@@ -12,7 +12,7 @@
           maxlength="16"
         />
 
-        <p id="errorBaner" ass="text-red-600 pt-3" #errorBaner>Wrong email or password</p>
+        <p id="errorBaner" [ngClass]="errorBaner ? 'show' : 'hide'" ass="text-red-600 pt-3" >Wrong email or password</p>
 
         <button type="submit" [disabled]="!logInForm.valid">Sign in</button>
       </form>

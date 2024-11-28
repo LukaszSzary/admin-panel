@@ -8,6 +8,7 @@ import * as globals from '../../global'
   providedIn: 'root'
 })
 export class CommentService {
+  private deleteCommentURL: string = globals + "";
   private apiURL: string = globals + "";
   
   private httpClient = inject(HttpClient);
@@ -17,7 +18,12 @@ export class CommentService {
   }
 
   public deleteComment(commentId: string): Observable<any>{
-    return this.httpClient.post<any>(this.apiURL, commentId);
+    return this.httpClient.post<any>(
+      this.deleteCommentURL, 
+      {
+        "postId": "",
+        "commentId": commentId
+      });
   }
 
   public banUser(commentId: string): Observable<any>{

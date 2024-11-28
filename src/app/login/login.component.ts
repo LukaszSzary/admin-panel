@@ -6,17 +6,18 @@ import {  ReactiveFormsModule,
 import { Router } from '@angular/router';
 import { LoginService } from './login.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  @ViewChild('errorBaner', { static: true }) errorBaner?: ElementRef;
-
+  errorBaner = false;
   logInForm!: FormGroup;
   credentials!: string;
   credentialsBase64!: string;
@@ -47,25 +48,31 @@ export class LoginComponent {
   }
 
   submitLogIn() {
-    this.router.navigate(['/adminPanel']);
-    /*
+    //this.router.navigate(['/adminPanel']);
+    
     this.credentials = this.logInForm.value.email + ':' + this.logInForm.value.password;
     this.credentialsBase64 = btoa(String.fromCharCode(...new TextEncoder().encode(this.credentials)));
 
     this.loginService.loginUser(this.credentialsBase64).subscribe({
       next: (response) => {
-        if (response.status == 200) {
+        if (response.status === 200) {
           this.openSnackBar('Login successfull');
           setTimeout(() => {
-            this.router.navigate(['/']);
+            this.router.navigate(['/adminPanel']);
           }, 2000);
         }
+    
       },
       error: (error) => {
-        this.errorBaner?.nativeElement.classList.add('removeOpacity');
+        if(error.status === 403){
+          console.log(error);
+        }
+
+        this.errorBaner = true;
+        console.log(this.errorBaner);
       },
     });
-    */
+    
   }
 
   openSnackBar(message: string) {

@@ -62,10 +62,11 @@ export class CommentAdministrationComponent {
   }
 
   discardReport(commentId: string){
-    this.handleReport(commentId);
+    
     this.commentService.discardReport(commentId).subscribe({
       next: (response) => {
-        if (response.status == 200) {
+        if (response.status === 200) {
+          this.refreshListOfReports(commentId);
           this.openSnackBar('Report discarded');
         }
       },
@@ -76,10 +77,11 @@ export class CommentAdministrationComponent {
   }
 
   deleteComment(commentId: string){
-    this.handleReport(commentId);
+    
     this.commentService.deleteComment(commentId).subscribe({
       next: (response) => {
-        if (response.status == 200) {
+        if (response.status === 200) {
+          this.refreshListOfReports(commentId);
           this.openSnackBar('Comment deleted');
         }
       },
@@ -90,10 +92,11 @@ export class CommentAdministrationComponent {
   }
 
   banUser(commentId: string){
-    this.handleReport(commentId);
+
     this.commentService.banUser(commentId).subscribe({
       next: (response) => {
-        if (response.status == 200) {
+        if (response.status === 200) {
+          this.refreshListOfReports(commentId);
           this.openSnackBar('User banned');
         }
       },
@@ -103,7 +106,7 @@ export class CommentAdministrationComponent {
     });
   }
 
-  handleReport(commentId: string){
+  refreshListOfReports(commentId: string){
     this.comments = this.comments.filter(com => com.id !== commentId);
     if(this.comments.length < 10){
       this.loadComments();

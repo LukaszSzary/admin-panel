@@ -64,38 +64,48 @@ export class PostAdministrationComponent {
   }
 
   discardReport(postId: string){
-    this.handleReport(postId);
+    
+    console.log("sssss");
     this.postService.discardReport(postId).subscribe({
       next: (response) => {
-        if (response.status == 200) {
+        if (response.status === 200) {
+          this.refreshListOfReports(postId);
           this.openSnackBar('Report discarded');
+          console.log(response);
+
+        }
+        if (response.status === 403){
+          console.log(response);
+
         }
       },
       error: (error) => {
-        
+        console.log(error);
       },
     });
   }
 
   deletePost(postId: string){
-    this.handleReport(postId);
+    console.log('hghg');
     this.postService.deletePost(postId).subscribe({
       next: (response) => {
         if (response.status == 200) {
+          this.refreshListOfReports(postId);
           this.openSnackBar('Post deleted');
         }
       },
       error: (error) => {
-        
+        console.log(error);
       },
     });
   }
 
   banUser(postId: string){
-    this.handleReport(postId);
+    
     this.postService.banUser(postId).subscribe({
       next: (response) => {
-        if (response.status == 200) {
+        if (response.status === 200) {
+          this.refreshListOfReports(postId);
           this.openSnackBar('User banned');
         }
       },
@@ -105,7 +115,7 @@ export class PostAdministrationComponent {
     });
   }
 
-  handleReport(postId: string){
+  refreshListOfReports(postId: string){
     this.posts = this.posts.filter(com => com.id !== postId);
     if(this.posts.length < 10){
       this.loadPosts();

@@ -4,9 +4,10 @@ import * as myGlobals from '../global';
 import { Observable } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
 
+
 @Injectable({ providedIn: 'root' })
 export class LoginService {
-  url = myGlobals.apiLink + '/authentication/login';
+  url = myGlobals.apiLink + '/authentication/noAuth/login';
   private httpClient = inject(HttpClient);
 
   loginUser(authString: string): Observable<any>{

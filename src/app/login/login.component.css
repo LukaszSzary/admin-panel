@@ -62,9 +62,12 @@ button:disabled {
   height: 1.5vh;
   font-size: 1.5vh; 
   letter-spacing: 3px;
+}
+
+.hide{
   opacity: 0;
 }
 
-.removeOpacity{
+.show{
   opacity: 1;
 }
