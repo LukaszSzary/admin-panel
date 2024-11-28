@@ -1,10 +1,13 @@
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PostService } from './post.service'
-import { Post } from './post';
-import { filter, fromEvent, map, Subscription, throttleTime } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { Post } from './post';
+import { filter, fromEvent, map, Observable, Subscription, throttleTime } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { LoginService } from '../../login/login.service';
+
+type postFunctionDelegate = (id: string) =>  Observable<any>;
 
 @Component({
   selector: 'app-post-administration',
@@ -14,9 +17,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrl: './post-administration.component.css'
 })
 export class PostAdministrationComponent {
+  
+
   @ViewChild('postsScroll') postsScroll!: ElementRef;
   
   private postService = inject(PostService);
+  private loginService = inject(LoginService);
   private snackBar = inject(MatSnackBar);
 
   private scrollSubscription!: Subscription;
@@ -63,9 +69,15 @@ export class PostAdministrationComponent {
     return container.scrollTop + container.clientHeight >= container.scrollHeight - threshold;
   }
 
+  refreshListOfReports(postId: string){
+    this.posts = this.posts.filter(com => com.id !== postId);
+    if(this.posts.length < 10){
+      this.loadPosts();
+    }  
+  }
+
   discardReport(postId: string){
     
-    console.log("sssss");
     this.postService.discardReport(postId).subscribe({
       next: (response) => {
         if (response.status === 200) {
@@ -74,34 +86,38 @@ export class PostAdministrationComponent {
           console.log(response);
 
         }
-        if (response.status === 403){
-          console.log(response);
-
-        }
       },
       error: (error) => {
-        console.log(error);
+        if (error.status == 403){
+          this.refreshToken(postId, this.postService.discardReport); 
+        }
       },
     });
   }
 
   deletePost(postId: string){
-    console.log('hghg');
+    
     this.postService.deletePost(postId).subscribe({
       next: (response) => {
+
         if (response.status == 200) {
           this.refreshListOfReports(postId);
           this.openSnackBar('Post deleted');
         }
+
       },
       error: (error) => {
-        console.log(error);
+       // console.log(error);
+      if (error.status == 403){
+        this.refreshToken(postId, this.postService.deletePost); 
+      }
       },
     });
   }
 
   banUser(postId: string){
-    
+    this.deletePost(postId);
+
     this.postService.banUser(postId).subscribe({
       next: (response) => {
         if (response.status === 200) {
@@ -110,16 +126,34 @@ export class PostAdministrationComponent {
         }
       },
       error: (error) => {
-        
+        if (error.status == 403){
+          this.refreshToken(postId, this.postService.banUser); 
+        }
       },
     });
   }
 
-  refreshListOfReports(postId: string){
-    this.posts = this.posts.filter(com => com.id !== postId);
-    if(this.posts.length < 10){
-      this.loadPosts();
-    }  
+  refreshToken(id: string, funcToDoWhenRefreshed: postFunctionDelegate){
+    this.loginService.refreshToken().subscribe({
+      next: (response) => {
+        if (response.status == 200) {
+
+          funcToDoWhenRefreshed(id).subscribe({
+            next: (response) => {
+              if (response.status == 200) {
+                this.openSnackBar('Action completed');
+              }
+            },
+            error: (error) => {
+              this.openSnackBar(error.statusText);
+            }, 
+          });
+        }
+      },
+      error: (error) => {
+        this.openSnackBar(error.statusText);
+      },
+    });
   }
 
   openSnackBar(message: string) {

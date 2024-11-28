@@ -57,9 +57,10 @@ export class LoginComponent {
       next: (response) => {
         if (response.status === 200) {
           this.openSnackBar('Login successfull');
+          console.log(response);
           setTimeout(() => {
             this.router.navigate(['/adminPanel']);
-          }, 2000);
+          }, 1000);
         }
     
       },
