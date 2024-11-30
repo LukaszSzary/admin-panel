@@ -1,7 +1,6 @@
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PostService } from './post.service'
-
 import { Post } from './post';
 import { filter, fromEvent, map, Observable, Subscription, throttleTime } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -108,7 +107,7 @@ export class PostAdministrationComponent {
       },
       error: (error) => {
        // console.log(error);
-      if (error.status == 403){
+      if (error.status === 403){
         this.refreshToken(postId, this.postService.deletePost); 
       }
       },
@@ -120,7 +119,7 @@ export class PostAdministrationComponent {
 
     this.postService.banUser(postId).subscribe({
       next: (response) => {
-        if (response.status === 200) {
+        if (response.status == 200) {
           this.refreshListOfReports(postId);
           this.openSnackBar('User banned');
         }

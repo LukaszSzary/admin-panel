@@ -2,8 +2,11 @@ import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Comment } from './comment';
 import { CommentService } from './comment.service';
-import { filter, fromEvent, map, Subscription, throttleTime } from 'rxjs';
+import { filter, fromEvent, map, Observable, Subscription, throttleTime } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { LoginService } from '../../login/login.service';
+
+type commentFunctionDelegate = (postId: string, commentId: string) =>  Observable<any>;
 
 @Component({
   selector: 'app-comment-administration',
@@ -17,6 +20,7 @@ export class CommentAdministrationComponent {
   
   private commentService = inject(CommentService);
   private snackBar = inject(MatSnackBar);
+  private loginService = inject(LoginService);
 
   private scrollSubscription!: Subscription;
 
@@ -61,7 +65,7 @@ export class CommentAdministrationComponent {
     return container.scrollTop + container.clientHeight >= container.scrollHeight - threshold;
   }
 
-  discardReport(commentId: string){
+  discardReport(postId: string, commentId: string){
     
     this.commentService.discardReport(commentId).subscribe({
       next: (response) => {
@@ -71,14 +75,16 @@ export class CommentAdministrationComponent {
         }
       },
       error: (error) => {
-        
+        if (error.status == 403){
+          this.refreshToken(postId, commentId, this.commentService.discardReport);
+        }
       },
     });
   }
 
-  deleteComment(commentId: string){
+  deleteComment(postId: string, commentId: string){
     
-    this.commentService.deleteComment(commentId).subscribe({
+    this.commentService.deleteComment(postId, commentId).subscribe({
       next: (response) => {
         if (response.status === 200) {
           this.refreshListOfReports(commentId);
@@ -86,14 +92,17 @@ export class CommentAdministrationComponent {
         }
       },
       error: (error) => {
-        
+        if (error.status == 403){
+          this.refreshToken(postId, commentId, this.commentService.deleteComment);
+        }
       },
     });
   }
 
-  banUser(commentId: string){
+  banUser(postId: string, commentId: string){
+    this.deleteComment(postId, commentId);
 
-    this.commentService.banUser(commentId).subscribe({
+    this.commentService.banUser(postId, commentId).subscribe({
       next: (response) => {
         if (response.status === 200) {
           this.refreshListOfReports(commentId);
@@ -101,7 +110,9 @@ export class CommentAdministrationComponent {
         }
       },
       error: (error) => {
-        
+        if (error.status == 403){
+          this.refreshToken(postId, commentId, this.commentService.banUser);
+        }
       },
     });
   }
@@ -111,6 +122,29 @@ export class CommentAdministrationComponent {
     if(this.comments.length < 10){
       this.loadComments();
     }  
+  }
+
+  refreshToken(postId: string, commentId: string, funcToDoWhenRefreshed: commentFunctionDelegate){
+    this.loginService.refreshToken().subscribe({
+      next: (response) => {
+        if (response.status == 200) {
+
+          funcToDoWhenRefreshed(postId, commentId).subscribe({
+            next: (response) => {
+              if (response.status == 200) {
+                this.openSnackBar('Action completed');
+              }
+            },
+            error: (error) => {
+              this.openSnackBar(error.statusText);
+            }, 
+          });
+        }
+      },
+      error: (error) => {
+        this.openSnackBar(error.statusText);
+      },
+    });
   }
 
   openSnackBar(message: string) {

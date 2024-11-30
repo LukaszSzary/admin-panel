@@ -13,8 +13,6 @@ export class PostService {
   private deletePostURL: string = globals.apiLink  + "/post/deletePost";
   private apiURL: string = globals.apiLink + "";
   private httpClient = inject(HttpClient);
-  private deletePostRequest!: DeletePostRequest;
-
 
 
   public discardReport(postId: string): Observable<any>{
@@ -22,12 +20,9 @@ export class PostService {
   }
 
   public deletePost(postId: string): Observable<any>{ 
-    this.deletePostRequest = new DeletePostRequest(postId);
-    
     return this.httpClient.post<any>(
       this.deletePostURL, 
-      this.deletePostRequest,
-      { observe: 'response' });
+      new DeletePostRequest(postId));
   }
 
   public banUser(postId: string): Observable<any>{
