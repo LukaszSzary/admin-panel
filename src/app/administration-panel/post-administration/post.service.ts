@@ -25,9 +25,6 @@ export class PostService {
       new DeletePostRequest(postId));
   }
 
-  public banUser(postId: string): Observable<any>{
-    return this.httpClient.post<any>(this.apiURL, postId);
-  }
 
   public getPosts(pageNo: number): Observable<any>{
     return of([

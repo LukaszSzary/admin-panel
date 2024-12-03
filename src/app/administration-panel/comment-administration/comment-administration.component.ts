@@ -5,6 +5,7 @@ import { CommentService } from './comment.service';
 import { filter, fromEvent, map, Observable, Subscription, throttleTime } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LoginService } from '../../login/login.service';
+import { BanUserService } from '../ban-user.service';
 
 type commentFunctionDelegate = (postId: string, commentId: string) =>  Observable<any>;
 
@@ -21,7 +22,7 @@ export class CommentAdministrationComponent {
   private commentService = inject(CommentService);
   private snackBar = inject(MatSnackBar);
   private loginService = inject(LoginService);
-
+  private banUserService = inject(BanUserService);
   private scrollSubscription!: Subscription;
 
   comments: Comment[] = [];
@@ -75,9 +76,7 @@ export class CommentAdministrationComponent {
         }
       },
       error: (error) => {
-        if (error.status == 403){
-          this.refreshToken(postId, commentId, this.commentService.discardReport);
-        }
+      
       },
     });
   }
@@ -92,9 +91,7 @@ export class CommentAdministrationComponent {
         }
       },
       error: (error) => {
-        if (error.status == 403){
-          this.refreshToken(postId, commentId, this.commentService.deleteComment);
-        }
+       console.log(error);
       },
     });
   }
@@ -102,7 +99,7 @@ export class CommentAdministrationComponent {
   banUser(postId: string, commentId: string){
     this.deleteComment(postId, commentId);
 
-    this.commentService.banUser(postId, commentId).subscribe({
+    this.banUserService.banUser('postId').subscribe({
       next: (response) => {
         if (response.status === 200) {
           this.refreshListOfReports(commentId);
@@ -110,9 +107,7 @@ export class CommentAdministrationComponent {
         }
       },
       error: (error) => {
-        if (error.status == 403){
-          this.refreshToken(postId, commentId, this.commentService.banUser);
-        }
+        
       },
     });
   }
@@ -122,29 +117,6 @@ export class CommentAdministrationComponent {
     if(this.comments.length < 10){
       this.loadComments();
     }  
-  }
-
-  refreshToken(postId: string, commentId: string, funcToDoWhenRefreshed: commentFunctionDelegate){
-    this.loginService.refreshToken().subscribe({
-      next: (response) => {
-        if (response.status == 200) {
-
-          funcToDoWhenRefreshed(postId, commentId).subscribe({
-            next: (response) => {
-              if (response.status == 200) {
-                this.openSnackBar('Action completed');
-              }
-            },
-            error: (error) => {
-              this.openSnackBar(error.statusText);
-            }, 
-          });
-        }
-      },
-      error: (error) => {
-        this.openSnackBar(error.statusText);
-      },
-    });
   }
 
   openSnackBar(message: string) {

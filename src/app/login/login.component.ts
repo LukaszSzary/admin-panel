@@ -7,7 +7,8 @@ import { Router } from '@angular/router';
 import { LoginService } from './login.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
-
+import { GetRoleService } from './get-role.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -25,6 +26,7 @@ export class LoginComponent {
   private loginService = inject(LoginService);
   private router = inject(Router);
   private snackBar = inject(MatSnackBar);
+  private getRole = inject(GetRoleService);
 
   constructor(private formBuilder: FormBuilder) {
     this.logInForm = this.formBuilder.group({
@@ -54,23 +56,25 @@ export class LoginComponent {
     this.credentialsBase64 = btoa(String.fromCharCode(...new TextEncoder().encode(this.credentials)));
 
     this.loginService.loginUser(this.credentialsBase64).subscribe({
-      next: (response) => {
+      next: async (response) => {
         if (response.status === 200) {
-          this.openSnackBar('Login successfull');
+          
           console.log(response);
-          setTimeout(() => {
+          console.log(await this.getRole.getRole());
+
+          if(await this.getRole.ifAdminLogged()){
+            this.openSnackBar('Login successfull');
             this.router.navigate(['/adminPanel']);
-          }, 1000);
+          }
+          else{
+            this.errorBaner = true;
+            alert('implement call logout');
+          }
         }
     
       },
       error: (error) => {
-        if(error.status === 403){
-          console.log(error);
-        }
-
-        this.errorBaner = true;
-        console.log(this.errorBaner);
+        this.errorBaner = true; 
       },
     });
     

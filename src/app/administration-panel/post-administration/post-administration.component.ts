@@ -5,6 +5,7 @@ import { Post } from './post';
 import { filter, fromEvent, map, Observable, Subscription, throttleTime } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LoginService } from '../../login/login.service';
+import { BanUserService } from '../ban-user.service';
 
 type postFunctionDelegate = (id: string) =>  Observable<any>;
 
@@ -23,7 +24,7 @@ export class PostAdministrationComponent {
   private postService = inject(PostService);
   private loginService = inject(LoginService);
   private snackBar = inject(MatSnackBar);
-
+  private banUserService = inject(BanUserService);
   private scrollSubscription!: Subscription;
 
   posts: Post[] = [];
@@ -87,9 +88,7 @@ export class PostAdministrationComponent {
         }
       },
       error: (error) => {
-        if (error.status == 403){
-          this.refreshToken(postId, this.postService.discardReport); 
-        }
+        
       },
     });
   }
@@ -107,9 +106,7 @@ export class PostAdministrationComponent {
       },
       error: (error) => {
        // console.log(error);
-      if (error.status === 403){
-        this.refreshToken(postId, this.postService.deletePost); 
-      }
+      
       },
     });
   }
@@ -117,7 +114,7 @@ export class PostAdministrationComponent {
   banUser(postId: string){
     this.deletePost(postId);
 
-    this.postService.banUser(postId).subscribe({
+    this.banUserService.banUser("postId").subscribe({
       next: (response) => {
         if (response.status == 200) {
           this.refreshListOfReports(postId);
@@ -125,32 +122,7 @@ export class PostAdministrationComponent {
         }
       },
       error: (error) => {
-        if (error.status == 403){
-          this.refreshToken(postId, this.postService.banUser); 
-        }
-      },
-    });
-  }
 
-  refreshToken(id: string, funcToDoWhenRefreshed: postFunctionDelegate){
-    this.loginService.refreshToken().subscribe({
-      next: (response) => {
-        if (response.status == 200) {
-
-          funcToDoWhenRefreshed(id).subscribe({
-            next: (response) => {
-              if (response.status == 200) {
-                this.openSnackBar('Action completed');
-              }
-            },
-            error: (error) => {
-              this.openSnackBar(error.statusText);
-            }, 
-          });
-        }
-      },
-      error: (error) => {
-        this.openSnackBar(error.statusText);
       },
     });
   }

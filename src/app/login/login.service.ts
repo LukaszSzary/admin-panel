@@ -7,7 +7,7 @@ import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class LoginService {
-  private refreshTokenURL: string = myGlobals.apiLink  + "/authentication/noAuth/refreshToken";
+
   private url = myGlobals.apiLink + '/authentication/noAuth/login';
   private httpClient = inject(HttpClient);
 
@@ -17,7 +17,5 @@ export class LoginService {
   return this.httpClient.post<any>(this.url, {} ,{ headers, observe: 'response' });
   }
 
-  refreshToken(): Observable<any>{
-    return this.httpClient.get(this.refreshTokenURL);
-  }
+ 
 }

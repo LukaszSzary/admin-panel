@@ -25,9 +25,6 @@ export class CommentService {
      );
   }
 
-  public banUser(postId: string, commentId: string): Observable<any>{
-    return this.httpClient.post<any>(this.apiURL, commentId);
-  }
 
   public getComments(pageNo: number): Observable<Comment[]>{
     return of([
