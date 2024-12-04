@@ -1,13 +1,9 @@
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { PostService } from './post.service'
 import { Post } from './post';
 import { filter, fromEvent, map, Observable, Subscription, throttleTime } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { LoginService } from '../../login/login.service';
 import { BanUserService } from '../ban-user.service';
-
-type postFunctionDelegate = (id: string) =>  Observable<any>;
 
 @Component({
   selector: 'app-post-administration',
@@ -22,7 +18,6 @@ export class PostAdministrationComponent {
   @ViewChild('postsScroll') postsScroll!: ElementRef;
   
   private postService = inject(PostService);
-  private loginService = inject(LoginService);
   private snackBar = inject(MatSnackBar);
   private banUserService = inject(BanUserService);
   private scrollSubscription!: Subscription;

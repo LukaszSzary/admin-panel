@@ -2,12 +2,9 @@ import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Comment } from './comment';
 import { CommentService } from './comment.service';
-import { filter, fromEvent, map, Observable, Subscription, throttleTime } from 'rxjs';
+import { filter, fromEvent, map, Subscription, throttleTime } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { LoginService } from '../../login/login.service';
 import { BanUserService } from '../ban-user.service';
-
-type commentFunctionDelegate = (postId: string, commentId: string) =>  Observable<any>;
 
 @Component({
   selector: 'app-comment-administration',
@@ -21,7 +18,6 @@ export class CommentAdministrationComponent {
   
   private commentService = inject(CommentService);
   private snackBar = inject(MatSnackBar);
-  private loginService = inject(LoginService);
   private banUserService = inject(BanUserService);
   private scrollSubscription!: Subscription;
 
