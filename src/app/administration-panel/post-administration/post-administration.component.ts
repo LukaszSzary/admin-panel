@@ -82,13 +82,12 @@ export class PostAdministrationComponent {
       next: (response) => {
         if (response.status === 200) {
           this.refreshListOfReports(postId);
-          this.openSnackBar('Report discarded');
-          console.log(response);
 
         }
       },
       error: (error) => {
-        
+        this.openSnackBar('Error, please try again later');
+        console.log(error);
       },
     });
   }
@@ -105,8 +104,8 @@ export class PostAdministrationComponent {
 
       },
       error: (error) => {
-       // console.log(error);
-      
+        this.openSnackBar('Error, please try again later');
+        console.log(error);
       },
     });
   }
@@ -122,7 +121,8 @@ export class PostAdministrationComponent {
         }
       },
       error: (error) => {
-
+        this.openSnackBar('Error, please try again later');
+        console.log(error);
       },
     });
   }

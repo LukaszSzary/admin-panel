@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Post } from './post';
+import { ManageObjRequestBody } from '../manage-obj-request-body';
 import { Observable, of } from 'rxjs';
-import { DeletePostRequest } from './deletePostRequest';
 import * as globals from '../../global'
 
 @Injectable({
@@ -11,63 +10,24 @@ import * as globals from '../../global'
 export class PostService {
   
   private deletePostURL: string = globals.apiLink  + "/post/deletePost";
-  private apiURL: string = globals.apiLink + "";
+  private discardReportURL: string = globals.apiLink  + "/post/verifyPost";
+  private getPostsURL: string = globals.apiLink  + "/post/getReportedPosts";
+  
   private httpClient = inject(HttpClient);
 
 
   public discardReport(postId: string): Observable<any>{
-    return this.httpClient.post<any>(this.apiURL, postId);
+    return this.httpClient.patch<any>(this.discardReportURL, new ManageObjRequestBody(postId, null));
   }
 
   public deletePost(postId: string): Observable<any>{ 
-    return this.httpClient.post<any>(
+    return this.httpClient.delete(
       this.deletePostURL, 
-      new DeletePostRequest(postId));
+      {body: new ManageObjRequestBody(postId, null)});
   }
 
 
   public getPosts(pageNo: number): Observable<any>{
-    return of([
-      {
-        id: 'ds',
-        title: 'title',
-        file: null,
-    },
-    {
-      id: 'gfds',
-      title: 'title',
-      file: null,
-    },
-    {
-      id: '5t',
-      title: 'title',
-      file: null,
-    },
-    {
-      id: 'dsad',
-      title: 'title',
-      file: null,
-    },
-    {
-    id: 'ds;l/',
-    title: 'title',
-    file: null,
-    },      
-    {
-    id: 'dfgs',
-    title: 'title',
-    file: null,
-    },
-    {
-    id: 'ddgs',
-    title: 'title',
-    file: null,
-    },
-    {
-      id: '1ddgs',
-      title: 'title',
-      file: null,
-      },
-    ]);
+    return this.httpClient.get(this.getPostsURL);
   }  
 }

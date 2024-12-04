@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
 import { GetRoleService } from './get-role.service';
 import { firstValueFrom } from 'rxjs';
+import { ManageObjRequestBody } from '../administration-panel/manage-obj-request-body';
 
 @Component({
   selector: 'app-login',
@@ -28,19 +29,29 @@ export class LoginComponent {
   private snackBar = inject(MatSnackBar);
   private getRole = inject(GetRoleService);
 
+  ngOnInit(){
+    const i = new ManageObjRequestBody();
+    const a = new ManageObjRequestBody(null,'sfd');
+    const c = new ManageObjRequestBody('fd');
+    alert('dfgfgdgfd');
+    console.log(i);
+    console.log(a);
+    console.log(c);
+  }
+
   constructor(private formBuilder: FormBuilder) {
     this.logInForm = this.formBuilder.group({
       email: [
         '',
         [
-        //  Validators.required,
+          Validators.required,
           Validators.email /*pattern(/^[\w]+@([\w-]+\.)+[\w]{2,4}$/)*/,
         ],
       ],
       password: [
         '',
         [
-        //  Validators.required,
+          Validators.required,
           Validators.pattern(
             /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/
           ),
