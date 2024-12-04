@@ -23,28 +23,18 @@ export class GetRoleService {
      
   }
 
-  public async getRole(){
+  public async ifAdminLogged() {
     try{
       const response = await firstValueFrom(this.getRoleINTERNAL());
-     // console.log(response.user.role);
+      console.log(response.user.role);
       
-      return response.user.role 
+      return response.user.role === "ADMIN";
     }
     catch (err){
       return false;
     }
   }
 
-  public async ifAdminLogged() {
-    try{
-      const response = await firstValueFrom(this.getRoleINTERNAL());
-     // console.log(response.user.role);
-      
-      return response.user.role !== "ADMIN";
-    }
-    catch (err){
-      return false;
-    }
-  }
+
 
 }

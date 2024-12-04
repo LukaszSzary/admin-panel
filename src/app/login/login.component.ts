@@ -58,18 +58,9 @@ export class LoginComponent {
     this.loginService.loginUser(this.credentialsBase64).subscribe({
       next: async (response) => {
         if (response.status === 200) {
-          
-          console.log(response);
-          console.log(await this.getRole.getRole());
-
-          if(await this.getRole.ifAdminLogged()){
-            this.openSnackBar('Login successfull');
-            this.router.navigate(['/adminPanel']);
-          }
-          else{
-            this.errorBaner = true;
-            alert('implement call logout');
-          }
+           
+          this.router.navigate(['/adminPanel']);
+      
         }
     
       },
