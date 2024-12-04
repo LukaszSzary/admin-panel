@@ -11,21 +11,9 @@ export class GetRoleService {
 
   private httpClient = inject(HttpClient);
   
-  private getRoleINTERNAL(): Observable<any>{
-    /*
-    const headers = new HttpHeaders({
-     // 'Content-Type': 'application/json',
-      //'Authorization': 'Bearer your-token-if-applicable'
-    });
-    */
-
-    return this.httpClient.get(this.whoAmIUrl, );
-     
-  }
-
   public async ifAdminLogged() {
     try{
-      const response = await firstValueFrom(this.getRoleINTERNAL());
+      const response: any = await firstValueFrom(this.httpClient.get(this.whoAmIUrl, ));
       console.log(response.user.role);
       
       return response.user.role === "ADMIN";
@@ -34,7 +22,5 @@ export class GetRoleService {
       return false;
     }
   }
-
-
 
 }
