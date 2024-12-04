@@ -9,9 +9,9 @@ import * as globals from '../../global'
 })
 export class PostService {
   
-  private deletePostURL: string = globals.apiLink  + "/post/deletePost";
-  private discardReportURL: string = globals.apiLink  + "/post/verifyPost";
-  private getPostsURL: string = globals.apiLink  + "/post/getReportedPosts";
+  private deletePostURL: string = globals.apiLink  + "/admin/deletePost";
+  private discardReportURL: string = globals.apiLink  + "/admin/verifyPost";
+  private getPostsURL: string = globals.apiLink  + "/admin/getReportedPosts";
   
   private httpClient = inject(HttpClient);
 
