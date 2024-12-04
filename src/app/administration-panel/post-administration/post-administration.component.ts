@@ -28,7 +28,6 @@ export class PostAdministrationComponent {
   private scrollSubscription!: Subscription;
 
   posts: Post[] = [];
-  imgSrc: string = '';
   isLoading = false;
   postsPageNo: number = 1;
 
@@ -110,10 +109,10 @@ export class PostAdministrationComponent {
     });
   }
 
-  banUser(postId: string){
+  banUser(postId: string, posterUsername: string){
     this.deletePost(postId);
 
-    this.banUserService.banUser("postId").subscribe({
+    this.banUserService.banUser(posterUsername).subscribe({
       next: (response) => {
         if (response.status == 200) {
           this.refreshListOfReports(postId);

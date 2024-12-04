@@ -17,5 +17,4 @@ export class LoginService {
   return this.httpClient.post<any>(this.url, {} ,{ headers, observe: 'response' });
   }
 
- 
 }

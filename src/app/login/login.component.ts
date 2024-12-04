@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {  ReactiveFormsModule,
   FormBuilder,
   FormGroup,
@@ -7,9 +7,6 @@ import { Router } from '@angular/router';
 import { LoginService } from './login.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
-import { GetRoleService } from './get-role.service';
-import { firstValueFrom } from 'rxjs';
-import { ManageObjRequestBody } from '../administration-panel/manage-obj-request-body';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +24,6 @@ export class LoginComponent {
   private loginService = inject(LoginService);
   private router = inject(Router);
   private snackBar = inject(MatSnackBar);
-  private getRole = inject(GetRoleService);
 
   constructor(private formBuilder: FormBuilder) {
     this.logInForm = this.formBuilder.group({

@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ManageObjRequestBody } from '../manage-obj-request-body';
-import { Observable, of } from 'rxjs';
+import { Observable} from 'rxjs';
+import { GetObjectsRequestBody } from '../get-obj-request-body';
 import * as globals from '../../global'
 
 @Injectable({
@@ -28,6 +29,7 @@ export class PostService {
 
 
   public getPosts(pageNo: number): Observable<any>{
-    return this.httpClient.get(this.getPostsURL);
+    alert('postservice implement');
+    return this.httpClient.get(this.getPostsURL,);
   }  
 }

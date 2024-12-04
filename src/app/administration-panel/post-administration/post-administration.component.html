@@ -5,13 +5,13 @@
             <label class="post-title">
                 {{post.title}}                
             </label>
-            <img [src]="imgSrc">     
+            <img [src]="post.imageUrl">     
         </div>
         
         <div id="button-wrapper">
             <button (click)="discardReport(post.id)">Discard report</button>
             <button (click)="deletePost(post.id)">Delete post</button>
-            <button (click)="banUser(post.id)">Delete post and block user</button>
+            <button (click)="banUser(post.id, post.posterUsername)">Delete post and block user</button>
         </div>
     </div>
     }
