@@ -29,16 +29,6 @@ export class LoginComponent {
   private snackBar = inject(MatSnackBar);
   private getRole = inject(GetRoleService);
 
-  ngOnInit(){
-    const i = new ManageObjRequestBody();
-    const a = new ManageObjRequestBody(null,'sfd');
-    const c = new ManageObjRequestBody('fd');
-    alert('dfgfgdgfd');
-    console.log(i);
-    console.log(a);
-    console.log(c);
-  }
-
   constructor(private formBuilder: FormBuilder) {
     this.logInForm = this.formBuilder.group({
       email: [
