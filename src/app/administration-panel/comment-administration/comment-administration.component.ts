@@ -66,7 +66,7 @@ export class CommentAdministrationComponent {
     return container.scrollTop + container.clientHeight >= container.scrollHeight - threshold;
   }
 
-  discardReport(postId: string, commentId: string){
+  discardReport(commentId: string){
     
     this.commentService.discardReport(commentId).subscribe({
       next: (response) => {
@@ -76,14 +76,15 @@ export class CommentAdministrationComponent {
         }
       },
       error: (error) => {
-      
+        this.openSnackBar('Error, please try again later');
+        console.log(error);
       },
     });
   }
 
-  deleteComment(postId: string, commentId: string){
+  deleteComment(commentId: string){
     
-    this.commentService.deleteComment(postId, commentId).subscribe({
+    this.commentService.deleteComment(commentId).subscribe({
       next: (response) => {
         if (response.status === 200) {
           this.refreshListOfReports(commentId);
@@ -91,15 +92,16 @@ export class CommentAdministrationComponent {
         }
       },
       error: (error) => {
-       console.log(error);
+        this.openSnackBar('Error, please try again later');
+        console.log(error);
       },
     });
   }
 
-  banUser(postId: string, commentId: string){
-    this.deleteComment(postId, commentId);
+  banUser(userName: string, commentId: string){
+    this.deleteComment(commentId);
 
-    this.banUserService.banUser('postId').subscribe({
+    this.banUserService.banUser(userName).subscribe({
       next: (response) => {
         if (response.status === 200) {
           this.refreshListOfReports(commentId);
@@ -107,7 +109,8 @@ export class CommentAdministrationComponent {
         }
       },
       error: (error) => {
-        
+        this.openSnackBar('Error, please try again later');
+        console.log(error);
       },
     });
   }

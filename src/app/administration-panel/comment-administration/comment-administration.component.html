@@ -2,9 +2,9 @@
     @for (comment of comments; track comment.id) {
     <div id="report-wrapper">
         <div id="button-wrapper">
-            <button (click)="discardReport(comment.postId, comment.id)">Discard report</button>
-            <button (click)="deleteComment(comment.postId, comment.id)">Delete comment</button>
-            <button (click)="banUser(comment.postId, comment.id)">Delete comment and block user</button>
+            <button (click)="discardReport(comment.id)">Discard report</button>
+            <button (click)="deleteComment(comment.id)">Delete comment</button>
+            <button (click)="banUser(comment.userName, comment.id)">Delete comment and block user</button>
         </div>
         <div class="comment">
             <label class="comment-title">

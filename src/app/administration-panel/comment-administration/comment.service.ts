@@ -1,83 +1,33 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Comment } from './comment';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import * as globals from '../../global'
-import { DeleteCommentRequest } from './deleteCommentRequest';
+import { ManageObjRequestBody } from '../manage-obj-request-body';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommentService {
-  private deleteCommentURL: string = globals.apiLink + "/comment/deleteComment";
-  private apiURL: string = globals.apiLink  + "";
+  private discardReportURL: string = globals.apiLink + "/admin/verifyComment";
+  private deleteCommentURL: string = globals.apiLink + "/admin/deleteComment";
+  private getCommentsURL: string = globals.apiLink + "/admin/getReportedComments";
   
   private httpClient = inject(HttpClient);
 
   public discardReport(commentId: string): Observable<any>{
-    return this.httpClient.post<any>(this.apiURL, commentId);
+    return this.httpClient.patch<any>(this.discardReportURL, new ManageObjRequestBody(null, commentId));
   }
 
-  public deleteComment(postId: string, commentId: string): Observable<any>{
-    return this.httpClient.post<any>(
+  public deleteComment(commentId: string): Observable<any>{
+    return this.httpClient.delete<any>(
       this.deleteCommentURL, 
-      new DeleteCommentRequest(postId, commentId)
+      {body: new ManageObjRequestBody(null, commentId)}
      );
   }
 
 
-  public getComments(pageNo: number): Observable<Comment[]>{
-    return of([
-    {
-    postId: 'gdg',  
-    id: 'FSDFDG',
-    userName: 'Tomek',
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco',
-    postedOn: new Date('2001-12-31'),
-    },
-    {
-      postId: 'gdg',
-      id: 'FSGFRBVBD',
-      userName: 'Tomek',
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco',
-      postedOn: new Date('2001-12-31'),
-    },
-    {
-      postId: 'gdg',
-      id: 'FSDFDRBVBD',
-      userName: 'Tomek',
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco',
-      postedOn: new Date('2001-12-31'),
-    },
-    {
-      postId: 'gdg',
-      id: 'DFDGFRBVBD',
-      userName: 'Tomek',
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco',
-      postedOn: new Date('2001-12-31'),
-    },
-    {
-      postId: 'gdg',
-      id: 'FSDFDGFkBD',
-      userName: 'Tomek',
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco',
-      postedOn: new Date('2001-12-31'),
-    },
-    {
-      postId: 'gdg',
-      id: 'FSyuFRBVBD',
-      userName: 'Tomek',
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco',
-      postedOn: new Date('2001-12-31'),
-    },
-    {
-      postId: 'gdg',
-      id: 'FSDFDvVBD',
-      userName: 'Tomek',
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco',
-      postedOn: new Date('2001-12-31'),
-    }
-  ]);
-    
+  public getComments(pageNo: number): Observable<any>{
+    alert('commentservice implement');
+    return this.httpClient.get(this.getCommentsURL,);
   }
 }

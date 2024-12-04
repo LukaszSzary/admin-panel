@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ManageObjRequestBody } from '../manage-obj-request-body';
 import { Observable} from 'rxjs';
-import { GetObjectsRequestBody } from '../get-obj-request-body';
 import * as globals from '../../global'
 
 @Injectable({
@@ -26,7 +25,6 @@ export class PostService {
       this.deletePostURL, 
       {body: new ManageObjRequestBody(postId, null)});
   }
-
 
   public getPosts(pageNo: number): Observable<any>{
     alert('postservice implement');
