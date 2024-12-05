@@ -23,7 +23,7 @@ export class CommentAdministrationComponent {
 
   comments: Comment[] = [];
   isLoading = false;
-  commentsPageNo: number = 1;
+  commentsPageNo: number = 0;
 
   ngOnInit(){
     this.loadComments();

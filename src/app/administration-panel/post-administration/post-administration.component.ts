@@ -24,7 +24,7 @@ export class PostAdministrationComponent {
 
   posts: Post[] = [];
   isLoading = false;
-  postsPageNo: number = 1;
+  postsPageNo: number = 0;
 
   ngOnInit(){
     this.loadPosts();
