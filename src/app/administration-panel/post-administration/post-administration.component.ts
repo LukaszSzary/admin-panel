@@ -1,9 +1,10 @@
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { PostService } from './post.service'
 import { Post } from './post';
-import { filter, fromEvent, map, Observable, Subscription, throttleTime } from 'rxjs';
+import { filter, fromEvent, map, Observable, Subscription, catchError, throttleTime,switchMap, throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BanUserService } from '../ban-user.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-post-administration',
@@ -13,7 +14,7 @@ import { BanUserService } from '../ban-user.service';
   styleUrl: './post-administration.component.css'
 })
 export class PostAdministrationComponent {
-  
+   httpClient = inject(HttpClient);
 
   @ViewChild('postsScroll') postsScroll!: ElementRef;
   
@@ -31,11 +32,28 @@ export class PostAdministrationComponent {
   }
 
   loadPosts(){
+    /*
+    var refreshUrl = 'http://localhost:8080' + '/authentication/noAuth/refreshToken';
+  var isRefreshing = false;
+
+  if (!isRefreshing) {
+
+    isRefreshing = true;
+
+     this.httpClient.get(refreshUrl, { withCredentials: true }).subscribe({
+      next: (r) =>{
+        console.log('gfsd');
+      }
+     })
+    
+  } 
+     */
+
     this.isLoading = true;
 
     this.postService.getPosts(this.postsPageNo).subscribe({
       next: (newposts) => {
-        this.posts =[...this.posts, ...newposts];
+        this.posts =[...this.posts, ...newposts.content];
         this.isLoading = false;
         this.postsPageNo++;
       },

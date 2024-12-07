@@ -34,7 +34,8 @@ export class CommentAdministrationComponent {
 
     this.commentService.getComments(this.commentsPageNo).subscribe({
       next: (newComments) => {
-        this.comments =[...this.comments, ...newComments];
+      //  console.log(newComments);
+        this.comments =[...this.comments, ...newComments.content];
         this.isLoading = false;
         this.commentsPageNo++;
       },

@@ -27,7 +27,12 @@ export class PostService {
   }
 
   public getPosts(pageNo: number): Observable<any>{
-    alert('postservice implement');
-    return this.httpClient.get(this.getPostsURL,);
+    //alert('postservice implement');
+    return this.httpClient.get(this.getPostsURL,{params:
+      {page: pageNo, 
+      pageSize: 20
+    },
+     //withCredentials: true ,
+  });
   }  
 }

@@ -27,7 +27,12 @@ export class CommentService {
 
 
   public getComments(pageNo: number): Observable<any>{
-    alert('commentservice implement');
-    return this.httpClient.get(this.getCommentsURL,);
+   // alert('commentservice implement');
+    return this.httpClient.get(this.getCommentsURL,{params:
+      {page: pageNo, 
+      pageSize: 20
+    },
+     //withCredentials: true ,
+  });
   }
 }
