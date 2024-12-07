@@ -14,7 +14,7 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(), 
     provideHttpClient(
       withFetch(),
-      withInterceptors([RefreshTokenInterceptor, CredentialsInterceptor])
+      withInterceptors([/*RefreshTokenInterceptor,*/ CredentialsInterceptor])
     ),
     provideAnimationsAsync(),
   ]

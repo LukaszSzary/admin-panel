@@ -16,11 +16,11 @@ export class AdministrationPanelComponent {
   private snackBar = inject(MatSnackBar);
 
   logOut(){
-    alert('implement logout')
+    //alert('implement logout')
 
     this.loginService.logOut().subscribe({
       next: (response) =>  {
-        
+        console.log(response);
       },
       error: (error) => {
         this.openSnackBar('Error, please try again later');

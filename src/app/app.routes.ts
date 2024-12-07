@@ -19,7 +19,7 @@ export const routes: Routes = [
         component: AdministrationPanelComponent,
         title: 'Administration Panel',
         canActivate: [authGuard],
-        canActivateChild: [authGuard],
+       // canActivateChild: [authGuard],
         children: [
             {
                 path: 'posts',

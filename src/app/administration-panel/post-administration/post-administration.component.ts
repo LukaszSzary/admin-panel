@@ -47,7 +47,7 @@ export class PostAdministrationComponent {
      })
     
   } 
-     */
+    */ 
 
     this.isLoading = true;
 

@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import * as myGlobals from '../global';
-import { firstValueFrom, Observable } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -8,9 +8,15 @@ import { HttpClient } from '@angular/common/http';
 })
 export class GetRoleService {
   private whoAmIUrl: string = myGlobals.apiLink  + "/authentication/noAuth/whoAmI";
-
   private httpClient = inject(HttpClient);
   
+  private isAuthenticatedSubject = new BehaviorSubject<boolean | null>(null);
+  isAuthenticated$: Observable<boolean | null> = this.isAuthenticatedSubject.asObservable();
+
+  constructor() {
+    this.updateAuthStatus();
+  }
+
   public async ifAdminLogged() {
     try{
       const response: any = await firstValueFrom(this.httpClient.get(this.whoAmIUrl, ));
@@ -23,4 +29,16 @@ export class GetRoleService {
     }
   }
 
+  updateAuthStatus() {
+    this.checkAuthStatusFromApi().subscribe((res) => {
+      console.log(res.user.role);
+      this.isAuthenticatedSubject.next(
+         res.user.role == 'ADMIN'
+      );
+    });
+  }
+
+  checkAuthStatusFromApi(): Observable<any> {
+    return this.httpClient.get(this.whoAmIUrl);
+  }
 }
