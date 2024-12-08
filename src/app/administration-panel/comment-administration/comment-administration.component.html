@@ -1,18 +1,22 @@
 <div id="wrapper" #commentsScroll>
-    @for (comment of comments; track comment.id) {
-    <div id="report-wrapper">
-        <div id="button-wrapper">
-            <button (click)="discardReport(comment.id)">Discard report</button>
-            <button (click)="deleteComment(comment.id)">Delete comment</button>
-            <button (click)="banUser(comment.userName, comment.id)">Delete comment and block user</button>
-        </div>
-        <div class="comment">
-            <label class="comment-title">
-                <span class="user-name">{{comment.userName}}</span>
-                <span class="posted-on-date">{{comment.postedOn | date: 'yyyy-MM-dd'}}</span>
-            </label>
-            <span class="comment-text">{{comment.text}}</span>       
-        </div>
+  @for (comment of comments; track comment.id) {
+  <div id="report-wrapper">
+    <div class="comment">
+      <label class="comment-title">
+        <span class="user-name">User: {{ comment.username }}</span>
+        <span class="posted-on-date"
+          >Report date: {{ comment.postedOn | date : "yyyy-MM-dd" }}</span
+        >
+      </label>
+      <span class="comment-text">Content: "{{ comment.text }}"</span>
     </div>
-    }
+    <div id="button-wrapper">
+      <button (click)="discardReport(comment.id)">Discard</button>
+      <button (click)="deleteComment(comment.id)">Delete</button>
+      <button (click)="banUser(comment.username, comment.id)">
+        Delete and block user
+      </button>
+    </div>
+  </div>
+  }
 </div>

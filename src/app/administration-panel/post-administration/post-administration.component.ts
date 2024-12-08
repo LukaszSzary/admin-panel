@@ -1,7 +1,17 @@
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
-import { PostService } from './post.service'
+import { PostService } from './post.service';
 import { Post } from './post';
-import { filter, fromEvent, map, Observable, Subscription, catchError, throttleTime,switchMap, throwError } from 'rxjs';
+import {
+  filter,
+  fromEvent,
+  map,
+  Observable,
+  Subscription,
+  catchError,
+  throttleTime,
+  switchMap,
+  throwError,
+} from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BanUserService } from '../ban-user.service';
 import { HttpClient } from '@angular/common/http';
@@ -11,13 +21,13 @@ import { HttpClient } from '@angular/common/http';
   standalone: true,
   imports: [],
   templateUrl: './post-administration.component.html',
-  styleUrl: './post-administration.component.css'
+  styleUrl: './post-administration.component.css',
 })
 export class PostAdministrationComponent {
-   httpClient = inject(HttpClient);
+  httpClient = inject(HttpClient);
 
   @ViewChild('postsScroll') postsScroll!: ElementRef;
-  
+
   private postService = inject(PostService);
   private snackBar = inject(MatSnackBar);
   private banUserService = inject(BanUserService);
@@ -27,37 +37,20 @@ export class PostAdministrationComponent {
   isLoading = false;
   postsPageNo: number = 0;
 
-  ngOnInit(){
+  ngOnInit() {
     this.loadPosts();
   }
 
-  loadPosts(){
-    /*
-    var refreshUrl = 'http://localhost:8080' + '/authentication/noAuth/refreshToken';
-  var isRefreshing = false;
-
-  if (!isRefreshing) {
-
-    isRefreshing = true;
-
-     this.httpClient.get(refreshUrl, { withCredentials: true }).subscribe({
-      next: (r) =>{
-        console.log('gfsd');
-      }
-     })
-    
-  } 
-    */ 
-
+  loadPosts() {
     this.isLoading = true;
 
     this.postService.getPosts(this.postsPageNo).subscribe({
       next: (newposts) => {
-        this.posts =[...this.posts, ...newposts.content];
+        this.posts = [...this.posts, ...newposts.objects.content];
         this.isLoading = false;
         this.postsPageNo++;
       },
-      error:(error)=> {
+      error: (error) => {
         console.error('Error fetching posts', error);
         this.isLoading = false;
       },
@@ -66,11 +59,14 @@ export class PostAdministrationComponent {
 
   ngAfterViewInit() {
     // Setup scroll event listener with throttling
-    this.scrollSubscription = fromEvent(this.postsScroll.nativeElement, 'scroll')
+    this.scrollSubscription = fromEvent(
+      this.postsScroll.nativeElement,
+      'scroll'
+    )
       .pipe(
         throttleTime(50),
         map(() => this.checkScrollPosition()),
-        filter(isBottom => isBottom && !this.isLoading)
+        filter((isBottom) => isBottom && !this.isLoading)
       )
       .subscribe(() => this.loadPosts());
   }
@@ -78,23 +74,24 @@ export class PostAdministrationComponent {
   checkScrollPosition(): boolean {
     const container = this.postsScroll.nativeElement;
     const threshold = 200; // Trigger 200px before the bottom
-    return container.scrollTop + container.clientHeight >= container.scrollHeight - threshold;
+    return (
+      container.scrollTop + container.clientHeight >=
+      container.scrollHeight - threshold
+    );
   }
 
-  refreshListOfReports(postId: string){
-    this.posts = this.posts.filter(com => com.id !== postId);
-    if(this.posts.length < 10){
+  refreshListOfReports(postId: string) {
+    this.posts = this.posts.filter((post) => post.id !== postId);
+    if (this.posts.length < 10) {
       this.loadPosts();
-    }  
+    }
   }
 
-  discardReport(postId: string){
-    
+  discardReport(postId: string) {
     this.postService.discardReport(postId).subscribe({
       next: (response) => {
         if (response.status === 200) {
           this.refreshListOfReports(postId);
-
         }
       },
       error: (error) => {
@@ -104,16 +101,13 @@ export class PostAdministrationComponent {
     });
   }
 
-  deletePost(postId: string){
-    
+  deletePost(postId: string) {
     this.postService.deletePost(postId).subscribe({
       next: (response) => {
-
-        if (response.status == 200) {
+        if (response.success) {
           this.refreshListOfReports(postId);
           this.openSnackBar('Post deleted');
         }
-
       },
       error: (error) => {
         this.openSnackBar('Error, please try again later');
@@ -122,7 +116,7 @@ export class PostAdministrationComponent {
     });
   }
 
-  banUser(postId: string, posterUsername: string){
+  banUser(postId: string, posterUsername: string) {
     this.deletePost(postId);
 
     this.banUserService.banUser(posterUsername).subscribe({

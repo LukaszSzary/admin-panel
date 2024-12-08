@@ -1,6 +1,6 @@
-export interface Comment{
-    id: string,
-    userName: string,
-    text: string,
-    postedOn: Date,
+export interface Comment {
+  id: string;
+  username: string;
+  text: string;
+  postedOn: Date;
 }

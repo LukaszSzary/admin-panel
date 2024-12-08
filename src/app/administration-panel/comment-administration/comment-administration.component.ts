@@ -15,7 +15,7 @@ import { BanUserService } from '../ban-user.service';
 })
 export class CommentAdministrationComponent {
   @ViewChild('commentsScroll') commentsScroll!: ElementRef;
-  
+
   private commentService = inject(CommentService);
   private snackBar = inject(MatSnackBar);
   private banUserService = inject(BanUserService);
@@ -25,21 +25,21 @@ export class CommentAdministrationComponent {
   isLoading = false;
   commentsPageNo: number = 0;
 
-  ngOnInit(){
+  ngOnInit() {
     this.loadComments();
   }
 
-  loadComments(){
+  loadComments() {
     this.isLoading = true;
 
     this.commentService.getComments(this.commentsPageNo).subscribe({
       next: (newComments) => {
-      //  console.log(newComments);
-        this.comments =[...this.comments, ...newComments.content];
+        this.comments = [...this.comments, ...newComments.objects.content];
+        console.log(this.comments);
         this.isLoading = false;
         this.commentsPageNo++;
       },
-      error:(error)=> {
+      error: (error) => {
         console.error('Error fetching comments', error);
         this.isLoading = false;
       },
@@ -48,11 +48,14 @@ export class CommentAdministrationComponent {
 
   ngAfterViewInit() {
     // Setup scroll event listener with throttling
-    this.scrollSubscription = fromEvent(this.commentsScroll.nativeElement, 'scroll')
+    this.scrollSubscription = fromEvent(
+      this.commentsScroll.nativeElement,
+      'scroll'
+    )
       .pipe(
         throttleTime(50),
         map(() => this.checkScrollPosition()),
-        filter(isBottom => isBottom && !this.isLoading)
+        filter((isBottom) => isBottom && !this.isLoading)
       )
       .subscribe(() => this.loadComments());
   }
@@ -60,14 +63,16 @@ export class CommentAdministrationComponent {
   checkScrollPosition(): boolean {
     const container = this.commentsScroll.nativeElement;
     const threshold = 200; // Trigger 200px before the bottom
-    return container.scrollTop + container.clientHeight >= container.scrollHeight - threshold;
+    return (
+      container.scrollTop + container.clientHeight >=
+      container.scrollHeight - threshold
+    );
   }
 
-  discardReport(commentId: string){
-    
+  discardReport(commentId: string) {
     this.commentService.discardReport(commentId).subscribe({
       next: (response) => {
-        if (response.status === 200) {
+        if (response.success) {
           this.refreshListOfReports(commentId);
           this.openSnackBar('Report discarded');
         }
@@ -79,8 +84,7 @@ export class CommentAdministrationComponent {
     });
   }
 
-  deleteComment(commentId: string){
-    
+  deleteComment(commentId: string) {
     this.commentService.deleteComment(commentId).subscribe({
       next: (response) => {
         if (response.status === 200) {
@@ -95,7 +99,7 @@ export class CommentAdministrationComponent {
     });
   }
 
-  banUser(userName: string, commentId: string){
+  banUser(userName: string, commentId: string) {
     this.deleteComment(commentId);
 
     this.banUserService.banUser(userName).subscribe({
@@ -112,11 +116,11 @@ export class CommentAdministrationComponent {
     });
   }
 
-  refreshListOfReports(commentId: string){
-    this.comments = this.comments.filter(com => com.id !== commentId);
-    if(this.comments.length < 10){
+  refreshListOfReports(commentId: string) {
+    this.comments = this.comments.filter((com) => com.id !== commentId);
+    if (this.comments.length < 10) {
       this.loadComments();
-    }  
+    }
   }
 
   openSnackBar(message: string) {

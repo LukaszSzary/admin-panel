@@ -9,6 +9,7 @@ import {
 } from '@angular/common/http';
 import { RefreshTokenInterceptor } from './refresh-token.inteceptor';
 import { CredentialsInterceptor } from './credentials.interceptor';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,5 +19,6 @@ export const appConfig: ApplicationConfig = {
       withFetch(),
       withInterceptors([RefreshTokenInterceptor, CredentialsInterceptor])
     ),
+    provideAnimationsAsync(),
   ],
 };
