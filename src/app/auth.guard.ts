@@ -4,32 +4,19 @@ import { inject } from '@angular/core';
 import { LoginService } from './login/login.service';
 import { filter, map } from 'rxjs';
 
-
-export const authGuard: CanActivateChildFn =  (childRoute, state) => {
+export const authGuard: CanActivateChildFn = (childRoute, state) => {
   const getRoleService = inject(GetRoleService);
   const router = inject(Router);
   const loginService = inject(LoginService);
-/*
-  if( await getRoleService.ifAdminLogged()){
-    console.log('ja')
-    return true;
-  }
-  else{
-    console.log('ni')
-    router.navigate(['']);
-    loginService.logOut().subscribe();
 
-    return false;
-  }
-*/
-getRoleService.isAuthenticated$.subscribe((isAuth) => {});
+  getRoleService.isAuthenticated$.subscribe((isAuth) => {});
   return getRoleService.isAuthenticated$.pipe(
     filter((isAutheticated) => isAutheticated !== null),
     map((isAuthenticated) => {
       if (isAuthenticated) {
-        return true; // Allow navigation if authenticated
+        return true;
       }
-      //router.navigate(['/login']); // Redirect to login if not authenticated
+      router.navigate(['/']);
       return false;
     })
   );

@@ -8,26 +8,20 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   standalone: true,
   imports: [RouterOutlet, RouterLink],
   templateUrl: './administration-panel.component.html',
-  styleUrl: './administration-panel.component.css'
+  styleUrl: './administration-panel.component.css',
 })
 export class AdministrationPanelComponent {
-
   private loginService = inject(LoginService);
   private snackBar = inject(MatSnackBar);
 
-  logOut(){
-    //alert('implement logout')
-
+  logOut() {
     this.loginService.logOut().subscribe({
-      next: (response) =>  {
-        console.log(response);
-      },
+      next: (response) => {},
       error: (error) => {
         this.openSnackBar('Error, please try again later');
         console.log(error);
       },
     });
-
   }
 
   openSnackBar(message: string) {
