@@ -46,6 +46,7 @@ export class PostAdministrationComponent {
 
     this.postService.getPosts(this.postsPageNo).subscribe({
       next: (newposts) => {
+        console.log(newposts);
         this.posts = [...this.posts, ...newposts.objects.content];
         this.isLoading = false;
         this.postsPageNo++;
