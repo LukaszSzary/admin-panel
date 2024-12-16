@@ -1,1 +1,1 @@
-export const apiLink =  'http://localhost:8080'; // 'https://localhost:44308';
+export const apiLink =  'https://screenvaultapi-cxdaatead8bpczde.polandcentral-01.azurewebsites.net';//'https://api-2-fxc7buc9e8a2fcbn.westeurope-01.azurewebsites.net';//'http://localhost:8080'; // 'https://localhost:44308';
