@@ -10,6 +10,7 @@ import {
 import { RefreshTokenInterceptor } from './refresh-token.inteceptor';
 import { CredentialsInterceptor } from './credentials.interceptor';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { CSRFInterceptor } from './CSRF-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,7 +18,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(
       withFetch(),
-      withInterceptors([RefreshTokenInterceptor, CredentialsInterceptor])
+      withInterceptors([RefreshTokenInterceptor, CredentialsInterceptor, CSRFInterceptor])
     ),
     provideAnimationsAsync(),
   ],
