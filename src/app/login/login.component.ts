@@ -64,11 +64,14 @@ export class LoginComponent {
     );
 
     this.loginService.loginUser(this.credentialsBase64).subscribe({
-      next: (response) => {
-        console.log(response.status === 200);
-        if (response.status === 200) {
+      next: async (response) => {
+      //  console.log(response.status === 200);
+        if (response.status === 200 && await this.getRoleService.ifAdminLogged()) {
           this.getRoleService.setAuthStatus(true);
           this.router.navigate(['/adminPanel']);
+        }
+        else{
+          this.loginService.logOut();
         }
       },
       error: (error) => {
