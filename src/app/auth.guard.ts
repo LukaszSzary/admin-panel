@@ -13,7 +13,7 @@ export const authGuard: CanActivateChildFn = (childRoute, state) => {
   return getRoleService.isAuthenticated$.pipe(
     filter((isAutheticated) => isAutheticated !== null),
     map((isAuthenticated) => {
-      console.log('authGuard '+ isAuthenticated);
+    //  console.log('authGuard '+ isAuthenticated);
       if (isAuthenticated) {
         return true;
       }

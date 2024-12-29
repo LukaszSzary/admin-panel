@@ -24,7 +24,7 @@ export class GetRoleService {
       const response: any = await firstValueFrom(
         this.httpClient.get(this.whoAmIUrl)
       );
-      console.log(response.user.role);
+    //  console.log(response.user.role);
 
       return response.user.role === 'ADMIN';
     } catch (err) {
@@ -34,7 +34,7 @@ export class GetRoleService {
 
   updateAuthStatus() {
     this.checkAuthStatusFromApi().subscribe((res) => {
-      console.log(res.user.role);
+    //  console.log(res.user.role);
       this.isAuthenticatedSubject.next(res.user.role == 'ADMIN');
     });
   }
