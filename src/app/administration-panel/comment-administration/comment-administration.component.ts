@@ -84,8 +84,8 @@ export class CommentAdministrationComponent {
     });
   }
 
-  deleteComment(postId: string, commentId: string) {
-    this.commentService.deleteComment(postId, commentId).subscribe({
+  deleteComment(commentId: string) {
+    this.commentService.deleteComment(commentId).subscribe({
       next: (response) => {
         if (response.success) {
           this.refreshListOfReports(commentId);
@@ -99,8 +99,8 @@ export class CommentAdministrationComponent {
     });
   }
 
-  banUser(userName: string, postId: string, commentId: string) {
-    this.deleteComment(postId, commentId);
+  banUser(userName: string, commentId: string) {
+    this.deleteComment(commentId);
 
     this.banUserService.banUser(userName).subscribe({
       next: (response) => {

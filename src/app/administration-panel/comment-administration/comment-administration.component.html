@@ -12,8 +12,8 @@
     </div>
     <div id="button-wrapper">
       <button (click)="discardReport(comment.id)">Discard</button>
-      <button (click)="deleteComment(comment.postId, comment.id)">Delete</button>
-      <button (click)="banUser(comment.username, comment.postId, comment.id)">
+      <button (click)="deleteComment( comment.id)">Delete</button>
+      <button (click)="banUser(comment.username, comment.id)">
         Delete and block user
       </button>
     </div>
