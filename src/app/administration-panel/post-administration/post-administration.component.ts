@@ -123,7 +123,7 @@ export class PostAdministrationComponent {
 
     this.banUserService.banUser(posterUsername).subscribe({
       next: (response) => {
-        if (response.status == 200) {
+        if (response.success) {
           this.refreshListOfReports(postId);
           this.openSnackBar('User banned');
         }

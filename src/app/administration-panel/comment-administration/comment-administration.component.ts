@@ -87,7 +87,7 @@ export class CommentAdministrationComponent {
   deleteComment(commentId: string) {
     this.commentService.deleteComment(commentId).subscribe({
       next: (response) => {
-        if (response.status === 200) {
+        if (response.success) {
           this.refreshListOfReports(commentId);
           this.openSnackBar('Comment deleted');
         }
@@ -104,7 +104,7 @@ export class CommentAdministrationComponent {
 
     this.banUserService.banUser(userName).subscribe({
       next: (response) => {
-        if (response.status === 200) {
+        if (response.success) {
           this.refreshListOfReports(commentId);
           this.openSnackBar('User banned');
         }
