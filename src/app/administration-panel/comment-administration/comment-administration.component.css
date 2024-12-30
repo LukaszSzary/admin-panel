@@ -5,7 +5,7 @@
   width: 98vw;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
   margin: 2.5vh 1vw 2.5vh 1vw;
   border-radius: 10px;
   overflow-y: auto;
