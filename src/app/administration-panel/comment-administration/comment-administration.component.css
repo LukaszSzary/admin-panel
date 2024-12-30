@@ -46,6 +46,7 @@ button {
 button:hover {
   background-color: #ffd60a;
   color: #000814;
+  cursor: pointer;
 }
 
 .comment {
