@@ -91,7 +91,7 @@ export class PostAdministrationComponent {
   discardReport(postId: string) {
     this.postService.discardReport(postId).subscribe({
       next: (response) => {
-        if (response.status === 200) {
+        if (response.status == 200) {
           this.refreshListOfReports(postId);
         }
       },
