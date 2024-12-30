@@ -22,9 +22,9 @@ export class CommentService {
     );
   }
 
-  public deleteComment(commentId: string): Observable<any> {
+  public deleteComment(postId: string, commentId: string): Observable<any> {
     return this.httpClient.delete<any>(this.deleteCommentURL, {
-      body: new ManageObjRequestBody(null, commentId),
+      body: new ManageObjRequestBody(postId, commentId),
     });
   }
 
